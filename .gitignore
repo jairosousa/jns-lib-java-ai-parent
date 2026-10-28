@@ -22,3 +22,20 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Maven / IDE
+target/
+.idea/
+*.iml
+.vscode/
+
+# Segredos — nunca versionar
+.env
+.env.*
+*.key
+*.pem
+application-local.yml
+application-local.properties
+
+# Claude Code (configurações pessoais)
+.claude/settings.local.json

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.jairosousa</groupId>
+    <artifactId>jns-lib-java-ai-parent</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>JNS Lib Java AI - Parent</name>
+    <description>Projeto base Java 25 + Spring Boot 4 + Spring AI com plugins, specs (SDD) e starter publicado no Maven Central</description>
+    <url>https://github.com/jairosousa/jns-lib-java-ai-parent</url>
+
+    <!-- Metadados exigidos pelo Maven Central (Fase 9) -->
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>jairosousa</id>
+            <name>Jairo Nascimento</name>
+            <url>https://github.com/jairosousa</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>https://github.com/jairosousa/jns-lib-java-ai-parent</url>
+        <connection>scm:git:https://github.com/jairosousa/jns-lib-java-ai-parent.git</connection>
+        <developerConnection>scm:git:git@github.com:jairosousa/jns-lib-java-ai-parent.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <modules>
+        <!-- Adicionados ao longo do plano:
+             jns-lib-java-ai-core (Fase 2), jns-lib-java-ai-sample (Fase 3),
+             jns-lib-java-ai-mcp-server (Fase 5), autoconfigure/starter/bom (Fase 9) -->
+    </modules>
+
+    <properties>
+        <java.version>25</java.version>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <spring-boot.version>4.1.2</spring-boot.version>
+        <spring-ai.version>2.0.2</spring-ai.version>
+
+        <maven-enforcer-plugin.version>3.6.1</maven-enforcer-plugin.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-bom</artifactId>
+                <version>${spring-ai.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <!-- Falha cedo se o build rodar com JDK ou Maven errados -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${maven-enforcer-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>[25,)</version>
+                                    <message>Este projeto exige JDK 25+. Ajuste o JAVA_HOME.</message>
+                                </requireJavaVersion>
+                                <requireMavenVersion>
+                                    <version>[3.9,)</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
