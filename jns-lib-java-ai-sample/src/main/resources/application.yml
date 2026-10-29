@@ -2,7 +2,7 @@ spring:
   application:
     name: jns-lib-java-ai-sample
   profiles:
-    # Sem perfil informado, usa a Anthropic. Troque com --spring.profiles.active=openai|local
+    # Sem perfil informado, usa a Anthropic. Troque com --spring.profiles.active=openai|ollama
     default: anthropic
   ai:
     anthropic:

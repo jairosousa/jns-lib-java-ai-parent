@@ -47,8 +47,8 @@ class ProvedorPorPerfilTest {
 
     @Nested
     @SpringBootTest
-    @ActiveProfiles("local")
-    class Local {
+    @ActiveProfiles("ollama")
+    class Ollama {
         @Autowired ApplicationContext context;
 
         @Test

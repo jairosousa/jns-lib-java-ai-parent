@@ -1,0 +1,5 @@
+# Ativa somente o ChatModel do Ollama (local, sem custo)
+spring:
+  ai:
+    model:
+      chat: ollama
