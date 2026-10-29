@@ -38,9 +38,9 @@
     </scm>
 
     <modules>
-        <!-- Adicionados ao longo do plano:
-             jns-lib-java-ai-core (Fase 2), jns-lib-java-ai-sample (Fase 3),
-             jns-lib-java-ai-mcp-server (Fase 5), autoconfigure/starter/bom (Fase 9) -->
+        <module>jns-lib-java-ai-sample</module>
+        <!-- Próximos: jns-lib-java-ai-core (Fase 2, semana 4), jns-lib-java-ai-mcp-server (Fase 5),
+             autoconfigure/starter/bom (Fase 9) -->
     </modules>
 
     <properties>
@@ -81,6 +81,15 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${spring-boot.version}</version>
+                    <!-- Sem o spring-boot-starter-parent, o repackage (jar executável) precisa ser declarado -->
+                    <executions>
+                        <execution>
+                            <id>repackage</id>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

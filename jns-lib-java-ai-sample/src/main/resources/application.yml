@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: jns-lib-java-ai-sample
+  profiles:
+    # Sem perfil informado, usa a Anthropic. Troque com --spring.profiles.active=openai|local
+    default: anthropic
+  ai:
+    anthropic:
+      api-key: ${ANTHROPIC_API_KEY:}
+      chat:
+        model: claude-opus-5-5
+        max-tokens: 2048
+    openai:
+      api-key: ${OPENAI_API_KEY:}
+      chat:
+        model: gpt-5.5
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        model: llama3.2
+
+logging:
+  level:
+    org.springframework.ai: INFO
