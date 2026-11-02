@@ -38,14 +38,18 @@
     </scm>
 
     <modules>
+        <module>jns-lib-java-ai-core</module>
         <module>jns-lib-java-ai-sample</module>
-        <!-- Próximos: jns-lib-java-ai-core (Fase 2, semana 4), jns-lib-java-ai-mcp-server (Fase 5),
+        <!-- Próximos: jns-lib-java-ai-mcp-server (Fase 5),
              autoconfigure/starter/bom (Fase 9) -->
     </modules>
 
     <properties>
         <java.version>25</java.version>
         <maven.compiler.release>${java.version}</maven.compiler.release>
+        <!-- Guarda os nomes dos parâmetros no bytecode (@RequestParam, @PathVariable sem nome explícito).
+             O spring-boot-starter-parent faz isso por padrão; como não herdamos dele, declaramos aqui. -->
+        <maven.compiler.parameters>true</maven.compiler.parameters>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 

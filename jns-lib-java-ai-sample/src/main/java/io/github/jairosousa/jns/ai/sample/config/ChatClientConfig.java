@@ -1,5 +1,6 @@
 package io.github.jairosousa.jns.ai.sample.config;
 
+import io.github.jairosousa.jns.ai.core.advisor.TokenUsageAdvisor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,7 @@ public class ChatClientConfig {
     ChatClient chatClient(ChatClient.Builder builder) {
         return builder
                 .defaultSystem(SYSTEM_PROMPT)
+                .defaultAdvisors(new TokenUsageAdvisor())   // loga modelo, tokens e latência de toda chamada
                 .build();
     }
 }
