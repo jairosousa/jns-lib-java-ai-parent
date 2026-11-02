@@ -1,0 +1,5 @@
+# Ativa somente o ChatModel da Anthropic
+spring:
+  ai:
+    model:
+      chat: anthropic

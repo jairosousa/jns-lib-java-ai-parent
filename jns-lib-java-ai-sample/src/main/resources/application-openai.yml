@@ -1,0 +1,5 @@
+# Ativa somente o ChatModel da OpenAI
+spring:
+  ai:
+    model:
+      chat: openai
