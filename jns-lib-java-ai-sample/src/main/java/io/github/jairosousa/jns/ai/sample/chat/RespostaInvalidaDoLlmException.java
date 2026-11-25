@@ -3,11 +3,15 @@ package io.github.jairosousa.jns.ai.sample.chat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-/** O LLM respondeu, mas a resposta não respeita o contrato esperado (ex.: nota 15). */
+/** O LLM respondeu, mas a resposta não respeita o contrato esperado (ex.: nota 15, JSON cortado). */
 @ResponseStatus(HttpStatus.BAD_GATEWAY)
 public class RespostaInvalidaDoLlmException extends RuntimeException {
 
     public RespostaInvalidaDoLlmException(String mensagem) {
         super(mensagem);
+    }
+
+    public RespostaInvalidaDoLlmException(String mensagem, Throwable causa) {
+        super(mensagem, causa);
     }
 }

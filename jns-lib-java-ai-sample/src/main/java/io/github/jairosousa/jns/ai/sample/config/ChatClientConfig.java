@@ -2,10 +2,12 @@ package io.github.jairosousa.jns.ai.sample.config;
 
 import io.github.jairosousa.jns.ai.core.advisor.TokenUsageAdvisor;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@EnableConfigurationProperties(JnsAiProperties.class)
 public class ChatClientConfig {
 
     static final String SYSTEM_PROMPT = """
@@ -19,10 +21,11 @@ public class ChatClientConfig {
      * qual provedor está por trás.
      */
     @Bean
-    ChatClient chatClient(ChatClient.Builder builder) {
+    ChatClient chatClient(ChatClient.Builder builder, JnsAiProperties properties) {
         return builder
                 .defaultSystem(SYSTEM_PROMPT)
-                .defaultAdvisors(new TokenUsageAdvisor())   // loga modelo, tokens e latência de toda chamada
+                // loga modelo, tokens, latência e custo (preços em jns.ai.precos) de toda chamada
+                .defaultAdvisors(new TokenUsageAdvisor(properties.precos()))
                 .build();
     }
 }

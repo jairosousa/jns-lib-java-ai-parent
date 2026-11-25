@@ -9,7 +9,8 @@ spring:
       api-key: ${ANTHROPIC_API_KEY:}
       chat:
         model: claude-opus-5-5
-        max-tokens: 2048
+        # Teto de saída (inclui o raciocínio do modelo). Com 2048 as respostas longas eram cortadas.
+        max-tokens: 8192
     openai:
       api-key: ${OPENAI_API_KEY:}
       chat:
@@ -18,6 +19,18 @@ spring:
       base-url: http://localhost:11434
       chat:
         model: llama3.2
+
+jns:
+  ai:
+    # US$ por 1 milhão de tokens (conferidos em 2026-10-28). Chaves com "." precisam de colchetes no YAML.
+    # Basta o nome curto: "gpt-5.5" também vale para "gpt-5.5-2026-04-23", que é o que a API devolve.
+    precos:
+      "[claude-opus-5-5]": { entrada: 4.00, saida: 20.00 }
+      "[claude-sonnet-5-5]": { entrada: 2.00, saida: 10.00 }
+      "[claude-haiku-5-5]": { entrada: 0.10, saida: 0.50 }
+      "[gpt-5.5]": { entrada: 5.00, saida: 30.00 }
+      "[gpt-5.4-mini]": { entrada: 0.75, saida: 4.50 }
+      "[llama3.2]": { entrada: 0.00, saida: 0.00 }
 
 logging:
   level:

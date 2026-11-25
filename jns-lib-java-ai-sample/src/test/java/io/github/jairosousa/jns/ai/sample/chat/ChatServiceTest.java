@@ -15,6 +15,8 @@ import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
+import tools.jackson.core.exc.UnexpectedEndOfInputException;
 
 /**
  * Testa o ChatService sem rede e sem custo: o LLM é substituído por um ChatModel falso
@@ -103,5 +105,47 @@ class ChatServiceTest {
                 .block();
 
         assertThat(pedacos).containsExactly("Use ", "record ", "para ", "DTOs.");
+    }
+
+    // ---- Exercício 3: JSON quebrado ----
+
+    @Test
+    void revisarCodigoComJsonQuebradoViraRespostaInvalida() {
+        // Resposta cortada no meio, como acontece quando o LLM bate no max-tokens
+        var modelo = new ChatModelFalso("{\"nota\": ");
+
+        assertThatThrownBy(() -> service(modelo).revisarCodigo("class A {}"))
+                .isInstanceOf(RespostaInvalidaDoLlmException.class)
+                .hasMessageContaining("JSON válido")
+                // a causa original: UnexpectedEndOfInputException do Jackson 3
+                .hasCauseInstanceOf(UnexpectedEndOfInputException.class);
+    }
+
+    // ---- Exercício 2: revisão em streaming ----
+
+    @Test
+    void revisaoEmStreamingEmitePedacosEOResultadoSoNoFinal() {
+        var modelo = new ChatModelFalso("{\"nota\": 8, \"problemas\": [], \"sugestoes\": [\"usar record\"]}");
+
+        List<EventoRevisao> eventos = service(modelo).revisarCodigoEmStreaming("class A {}").collectList().block();
+
+        // vários pedaços do JSON...
+        assertThat(eventos.subList(0, eventos.size() - 1)).allSatisfy(
+                evento -> assertThat(evento).isInstanceOf(EventoRevisao.Parcial.class));
+        // ...e um único resultado convertido no final
+        assertThat(eventos.getLast()).isEqualTo(new EventoRevisao.Concluida(
+                new RevisaoCodigo(8, List.of(), List.of("usar record"))));
+        // o prompt levou as instruções de formato JSON, como o .entity() faria
+        assertThat(modelo.ultimoPrompt.getContents()).containsIgnoringCase("json");
+    }
+
+    @Test
+    void revisaoEmStreamingComJsonQuebradoTerminaComErro() {
+        var modelo = new ChatModelFalso("{\"nota\": 8, \"problemas\": ");
+
+        StepVerifier.create(service(modelo).revisarCodigoEmStreaming("class A {}"))
+                .thenConsumeWhile(evento -> evento instanceof EventoRevisao.Parcial)
+                .expectError(RespostaInvalidaDoLlmException.class)
+                .verify();
     }
 }

@@ -8,6 +8,8 @@ package io.github.jairosousa.jns.ai.core.advisor;
  * @param tokensSaida   tokens gerados (inclui raciocínio, quando houver)
  * @param latenciaMs    tempo total da chamada em milissegundos
  * @param streaming     true quando a resposta veio por streaming
+ * @param custoUsd      custo estimado em US$, ou {@code null} se o modelo não estiver na tabela de preços
  */
-public record UsoDeTokens(String modelo, Integer tokensEntrada, Integer tokensSaida, long latenciaMs, boolean streaming) {
+public record UsoDeTokens(String modelo, Integer tokensEntrada, Integer tokensSaida, long latenciaMs,
+        boolean streaming, Double custoUsd) {
 }
